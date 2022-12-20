@@ -1,3 +1,32 @@
+# Raspberry PI Q7RF
+
+This *work in progress*!  
+The integration of Q7RF code with CC1101 driver for Raspberry PI is not yet done.
+
+## Install WiringPi
+```shell
+git clone https://github.com/WiringPi/WiringPi
+cd WiringPi
+./build
+```
+
+## Compile Raspberry PI Q7RF
+
+```shell
+cd components/q7rf
+g++ cc1100_raspi.cpp rpi-q7rf.cpp -o rpi-q7rf -lwiringPi
+```
+
+See this [reference](https://github.com/SpaceTeddy/CC1101/issues/52).
+
+## Run Raspberry PI Q7RF
+
+```shell
+./rpi-q7rf -v -a1 -r3 -i1000 -t5 -c1 -f868 -m100
+```
+
+Next is the documentation of the project this project relies on. 
+
 # esphome-q7rf
 
 This is an ESPHome custom component which allows you to control a Computherm/Delta Q7RF/Q8RF receiver equiped furnace using a TI CC1101 transceiver module. It defines a switch platform for state toggling and a service for pairing.
