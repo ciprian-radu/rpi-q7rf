@@ -154,7 +154,6 @@ void compile_msg(uint16_t device_id, uint8_t cmd, uint8_t *msg) {
     cursor_msg++;
   }
 
-#if ESPHOME_LOG_LEVEL >= ESPHOME_LOG_LEVEL_VERBOSE
   // Assemble debug print
   char debug[91];
   cursor = debug;
@@ -165,7 +164,6 @@ void compile_msg(uint16_t device_id, uint8_t cmd, uint8_t *msg) {
     cursor_msg++;
   }
   printf("Encoded msg: 0x%02x as 0x%s", cmd, debug);
-#endif
 }
 
 bool Q7RFSwitch::reset_cc() {
@@ -347,6 +345,7 @@ void Q7RFSwitch::set_state(bool state) {
 }
 
 void Q7RFSwitch::setup() {
+  printf("Setup...");
   // Revert switch to off state
   this->set_state(false);
 
@@ -575,6 +574,17 @@ int main(int argc, char *argv[]) {
 	for(; optind < argc; optind++)
 		printf("argument: %s\n", argv[optind]);
 
+
+
+  printf("Creating Q7RFSwitch");
+  q7rf::Q7RFSwitch* q7rfSwitch = new q7rf::Q7RFSwitch();
+  printf("Setting up Q7RFSwitch");
+  q7rfSwitch->setup();
+  printf("Pairing Q7RFSwitch");
+  q7rfSwitch->on_pairing();
+
+
+
 	//------------- welcome message ------------------------
 	printf("Raspberry CC1101 SPI Library test\n");
 
@@ -594,10 +604,11 @@ int main(int argc, char *argv[]) {
 
 	cc1100.show_main_settings();             //shows setting debug messages to UART
 	cc1100.show_register_settings();
+
 	//------------------------- Main Loop ------------------------
-	for (;;)
-	{
-		delay(1);                                           //delay to reduce system load
+	// for (;;)
+	// {
+	// 	delay(1);                                           //delay to reduce system load
 
 		if (millis() - prev_millis_1s_timer >= interval)    // one second update timer
 		{
@@ -621,7 +632,7 @@ int main(int argc, char *argv[]) {
 			prev_millis_1s_timer = millis();
   		}
 
-	}
+	// }
     printf("finished!\n");
     return 0;
 }
